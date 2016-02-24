@@ -1,0 +1,17 @@
+    parse: function (oResponse) {
+            this._oMessagesModel = new JSONModel({});
+
+            if (typeof oResponse.__batchResponses !== undefined && oResponse.__batchResponses.length > 0) {
+                if (typeof oResponse.__batchResponses[0].__changeResponses !== undefined &&
+                    oResponse.__batchResponses[0].__changeResponses.length > 0) {
+                    if (typeof oResponse.__batchResponses[0].__changeResponses[0].headers !== undefined &&
+                        oResponse.__batchResponses[0].__changeResponses[0].headers["sap-message"] !== undefined) {
+                        this._oMessagesModel.setData(
+                            JSON.parse(oResponse.__batchResponses[0].__changeResponses[0].headers["sap-message"]));
+                    }
+                }
+            }
+            return this._oMessagesModel;
+        }
+        
+        //Add messages to /iwbep/if_message_container in the gateway service (and setting one to be ' iv_is_leading_message')
