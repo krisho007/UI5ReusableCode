@@ -1,0 +1,53 @@
+	this.getView().getModel().submitChanges({
+				success: function(context) {
+					//Batch  request will always endup here.
+					//Check for error again.
+					if (context.__batchResponses[0].hasOwnProperty("response")) {
+						if (context.__batchResponses[0].response.statusCode === "400") {
+							//oModel.resetChanges(); //Data is set back to original. 
+							var error = jQuery.parseJSON(context.__batchResponses[0].response.body).error.message.value;
+							var dialog = new sap.m.Dialog({
+								title: "Error",
+								type: "Message",
+								state: "Error",
+								content: new sap.m.Text({
+									text: error
+								}),
+								beginButton: new sap.m.Button({
+									text: "OK",
+									press: function() {
+										dialog.close();
+									}
+								}),
+								afterClose: function() {
+									dialog.destroy();
+								}
+							});
+							dialog.open();
+						}
+					} else {
+						var msg = "Reallocation was suuceesful";
+						MessageToast.show(msg);
+					}
+				},
+				error: function(error) {
+					var dialog = new sap.m.Dialog({
+						title: "Error",
+						type: "Message",
+						state: "Error",
+						content: new sap.m.Text({
+							text: "Failed to reallocate"
+						}),
+						beginButton: new sap.m.Button({
+							text: "OK",
+							press: function() {
+								dialog.close();
+							}
+						}),
+						afterClose: function() {
+							dialog.destroy();
+						}
+					});
+					dialog.open();
+				}
+			});
