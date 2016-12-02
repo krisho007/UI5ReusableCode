@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>SAPUI5 single file template | nabisoft</title>
+        <script src="https://openui5.hana.ondemand.com/resources/sap-ui-core.js"
+            id="sap-ui-bootstrap"
+            data-sap-ui-theme="sap_bluecrystal"
+            data-sap-ui-libs="sap.m"
+            data-sap-ui-bindingSyntax="complex"
+            data-sap-ui-compatVersion="edge"
+            data-sap-ui-preload="async"></script>
+            <!-- CSS colurs for country colors -->
+         <style type="text/css">
+tr[data-background="Mexico"] {
+ background-color: #eaa6a6 !Important;
+}
+tr[data-background="Germany"] {
+ background-color: #7dc0dc !Important;
+}
+           tr[data-background="UK"] {
+ background-color: #dec588 !Important;
+}
+           tr[data-background="Sweden"] {
+ background-color: #98d0a9 !Important;
+}
+tr[data-background="France"] {
+ background-color: #d098c9 !Important;
+}
+           tr[data-background="Spain"] {
+ background-color: #c2d098 !Important;
+}
+           tr[data-background="Canada"] {
+ background-color: #d0d09a !Important;
+}          
+
+       </style>
+        <!-- XMLView -->
+        <script id="myXmlView" type="ui5/xmlview">
+            <mvc:View
+                controllerName="MyController"
+                xmlns="sap.m"
+                xmlns:core="sap.ui.core"
+                xmlns:mvc="sap.ui.core.mvc">
+       
+                <Table
+                    id="myTable"
+                    growing="true"
+                    growingThreshold="10"
+                    growingScrollToLoad="true"
+                    busyIndicatorDelay="0"
+                    items="{/Customers}">
+                    <headerToolbar>
+                        <Toolbar>
+                            <Title text="Customers"/>
+                            <ToolbarSpacer/>
+                        </Toolbar>
+                    </headerToolbar>
+                    <columns>
+                        <Column>
+                            <Text text="CustomerID"/>
+                        </Column>
+                        <Column>
+                            <Text text="Company Name"/>
+                        </Column>
+                        <Column>
+                            <Text text="Address"/>
+                        </Column>
+                        <Column>
+                            <Text text="Country"/>
+                        </Column>
+                    </columns>
+                    <items>
+                  <ColumnListItem type="Active">
+                  <!-- This is the most important part. This will result in writing country to DOM -->
+                    <customData>
+                      <core:CustomData key="background" value="{Country}" writeToDom="true" />
+                    </customData>
+                    <cells>
+                        <ObjectIdentifier title="{CustomerID}"/>
+                        <Text text="{CompanyName}"/> 
+                        <Text text="{Address}"/> 
+                        <Text text="{Country}"/> 
+                    </cells>
+                </ColumnListItem>
+                    </items>
+                </Table>
+ 
+            </mvc:View>
+        </script>
+
+        <script>
+            sap.ui.getCore().attachInit(function () {
+                "use strict";
+
+                //### Controller ###
+                sap.ui.define([
+                    "sap/ui/core/mvc/Controller",
+                    "sap/ui/model/odata/v2/ODataModel"
+                ], function (Controller, ODataModel) {
+                    "use strict";
+ 
+                    return Controller.extend("MyController", {
+                        onInit : function () {
+                            this.getView().setModel(
+                                new ODataModel("https://cors-anywhere.herokuapp.com/services.odata.org/V2/Northwind/Northwind.svc/", {
+                                    json : true,
+                                    useBatch : false
+                                })
+                            );
+ 
+                        }
+                    });
+                });
+ 
+                //### THE APP: place the XMLView somewhere into DOM ###
+                sap.ui.xmlview({
+                    viewContent : jQuery("#myXmlView").html()
+                }).placeAt("content");
+ 
+            });
+        </script>
+ 
+    </head>
+ 
+    <body class="sapUiBody">
+        <div id="content"></div>
+    </body>
+</html>
