@@ -1,10 +1,12 @@
-			model.callFunction("/GetComponentDetail", "GET", {"ComponentNumber": enteredComponent}, function(oData, response){
-			//Set the value to the right column item
-			this.getView().getController()._ComponentDialog.data("source").setValue(this.formatter.removeLeadingZerosFromString(oData.Id));
-			var row = this.getView().getController()._ComponentDialog.data("source").getParent();
-			row.getCells()[2].setText(oData.Name); //Component's description
-			row.getCells()[4].setSelectedKey(oData.UoM); //Component's UoM				
-			},
-			function(oError){
-				
+			model.callFunction("/GetComponentDetail", {
+				method: "GET",
+				urlParameters: {
+					"ComponentNumber": enteredComponent
+				},
+				success: function(oData, response) {
+			
+				},
+				error: function(oError) {
+
+				}
 			});
