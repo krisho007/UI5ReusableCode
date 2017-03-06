@@ -1,4 +1,4 @@
-			model.callFunction("GetComponentDetail", "GET", {"ComponentNumber": enteredComponent}, function(oData, response){
+			model.callFunction("/GetComponentDetail", "GET", {"ComponentNumber": enteredComponent}, function(oData, response){
 			//Set the value to the right column item
 			this.getView().getController()._ComponentDialog.data("source").setValue(this.formatter.removeLeadingZerosFromString(oData.Id));
 			var row = this.getView().getController()._ComponentDialog.data("source").getParent();
