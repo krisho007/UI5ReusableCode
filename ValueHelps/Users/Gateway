@@ -1,0 +1,74 @@
+  METHOD get_manager_name.
+
+    DATA lv_userid    TYPE xubname.
+    DATA lv_lastname  TYPE ad_mc_nmla.
+    DATA lv_firstname TYPE ad_mc_nmfi.
+    DATA lt_manager   TYPE zcl_mpm_costrol_01_mpc=>tt_manager.
+    DATA ls_manager   LIKE LINE OF lt_manager.
+    DATA: lv_string      TYPE string,
+          lv_string1(20) TYPE c,
+          lv_string2     TYPE string.
+
+
+    IF iv_search_string IS NOT INITIAL.
+
+      "Get Userid search string
+      lv_userid = iv_search_string.
+      TRANSLATE lv_userid TO UPPER CASE.
+      CONCATENATE '%' lv_userid '%' INTO lv_userid.
+
+      "Get last name search string
+      lv_lastname = iv_search_string.
+      lv_string = lv_string1 = lv_lastname.
+      TRANSLATE lv_string TO UPPER CASE.
+      TRANSLATE lv_string1 TO UPPER CASE.
+
+      CALL FUNCTION 'ISP_CONVERT_FIRSTCHARS_TOUPPER'
+        EXPORTING
+          input_string  = lv_string1
+*         SEPARATORS    = ' -.,;:'
+        IMPORTING
+          output_string = lv_string1.
+
+      lv_string2 = lv_string1.
+      CONCATENATE '%' lv_string '%' INTO lv_string.
+      CONCATENATE '%' lv_string2 '%' INTO lv_string2.
+      CONCATENATE '%' lv_lastname '%' INTO lv_lastname.
+
+      "Get first name search string
+      lv_firstname = lv_lastname.
+
+    ENDIF.
+    " Search for the names
+    IF lv_userid IS NOT INITIAL AND lv_lastname IS NOT INITIAL AND lv_firstname IS NOT INITIAL.
+      " Search by userid, first name and last name
+      SELECT * FROM v_usr_name
+             INTO TABLE @DATA(lt_manager1)
+             WHERE  bname LIKE @lv_userid
+            OR  name_last LIKE @lv_lastname
+            OR name_last LIKE @lv_string
+            OR name_last LIKE @lv_string2
+            OR name_first LIKE @lv_firstname
+            OR name_first LIKE @lv_string
+            OR name_first LIKE @lv_string2
+            OR name_text LIKE @lv_firstname
+            OR name_text LIKE @lv_string
+            OR name_text LIKE @lv_string2            .
+
+      LOOP AT lt_manager1 INTO DATA(ls_manager1).
+        ls_manager-bname     = ls_manager1-bname.
+        ls_manager-firstname = ls_manager1-name_first.
+        ls_manager-lastname  = ls_manager1-name_last.
+        ls_manager-name      = ls_manager1-name_text.
+        APPEND ls_manager TO lt_manager.
+        CLEAR: ls_manager1, ls_manager.
+      ENDLOOP.
+    ENDIF.
+
+    IF lt_manager[] IS NOT INITIAL.
+      ex_manager_name_t[] = lt_manager[].
+    ELSE.
+      ex_error_msg = 'No Data Found'.
+    ENDIF.
+
+  ENDMETHOD.
