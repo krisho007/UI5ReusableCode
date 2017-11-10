@@ -1,0 +1,69 @@
+  METHOD get_materials.
+*Get Open search string
+    DATA: lv_search_string TYPE string,
+          lv_statement     TYPE string,
+          lv_total         TYPE i,
+          lv_system        TYPE db6schema,
+          lr_result        TYPE REF TO data,
+          lv_text_n        TYPE string,
+          lv_out           TYPE REF TO data,
+          ls_entity        TYPE zcl_mpm_costrol_01_mpc=>ts_f4_material.
+
+    DATA: BEGIN OF ls_output,
+            matnr TYPE matnr,
+            maktx TYPE maktx,
+          END OF ls_output,
+          lt_table LIKE STANDARD TABLE OF ls_output.
+
+    lv_total = iv_top + iv_skip.
+
+    "Get the Schema name
+    SELECT SINGLE schemaname INTO lv_system FROM db6navsyst WHERE sysid = sy-sysid.
+
+    lv_statement =
+    | SELECT DISTINCT | &&
+    | M.MATNR, | &&
+    | T.MAKTX | &&
+    | FROM { lv_system }.MARA M | &&
+    | INNER JOIN { lv_system }.MAKT T ON T.MATNR = M.MATNR AND T.SPRAS = 'E' | &&
+    | WHERE M.LVORM != 'X' |.
+
+    "Search string
+    "Add search queries
+    lv_search_string = iv_search_term.
+    IF lv_search_string IS NOT INITIAL.
+      TRANSLATE lv_search_string TO UPPER CASE.
+      lv_statement = lv_statement && | AND (CONTAINS((M.MATNR, T.MAKTX), '| && lv_search_string && |' ))|.
+    ENDIF.
+
+    "Add Order By
+    lv_statement = lv_statement && | ORDER BY M.MATNR|.
+
+    "Add pagination
+    lv_statement = lv_statement && | LIMIT { iv_top } OFFSET { iv_skip }|.
+
+*********SQL End******************************
+
+    GET REFERENCE OF lt_table INTO lr_result.
+*Call HANA method to execute the query and get the results
+    CALL METHOD zcl_mpm_cost_utility=>hana_sql_query_execute
+      EXPORTING
+        im_statement = lv_statement
+        in_data      = lr_result
+      IMPORTING
+        out_msg      = lv_text_n
+        out_data     = lv_out
+      EXCEPTIONS
+        error        = 1
+        OTHERS       = 2.
+    IF sy-subrc <> 0.
+*Implement suitable error handling here
+    ENDIF.
+
+    LOOP AT lt_table INTO ls_output.
+      ls_entity-id = ls_output-matnr.
+      ls_entity-name = ls_output-maktx.
+      APPEND ls_entity TO ex_materials_t.
+    ENDLOOP.
+
+  ENDMETHOD.
