@@ -16,7 +16,16 @@ sap.ui.define(["sap/ui/core/format/DateFormat"], function(DateFormat) {
 				pattern: "MM/dd/yyyy"
 			});
 			return oDateFormat.format(new Date(date));
-		}
+		},
+		integerWithThousandsSeparator: function(number){
+			//2509 will be shown as 2,509
+			var oIntegerInstance = NumberFormat.getIntegerInstance({
+				style: "standard",
+				groupingEnabled: true
+			});
+			var formattedNumber = oIntegerInstance.format(number);
+			return formattedNumber;
+		}		
 	}
 }
 ]);
