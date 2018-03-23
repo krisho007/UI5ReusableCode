@@ -1,1 +1,12 @@
 
+<mvc:View controllerName="ZHR_VACATION_REPORT.controller.View1" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.m.semantic" xmlns:smartTable="sap.ui.comp.smarttable" xmlns="sap.m" height="100%">
+	<semantic:FullscreenPage title="Vacation Report" showNavButton="true" navButtonPress="onNavButtonPress">
+		<semantic:content>
+		<smartTable:SmartTable id="LineItemsSmartTable" entitySet="QuotaRecords" tableType="Table"
+			useExportToExcel="true" beforeExport="onBeforeExport" useVariantManagement="false" useTablePersonalisation="false" header="Line Items"
+			showRowCount="true" persistencyKey="SmartTableAnalytical_Explored" enableAutoBinding="true" class="sapUiResponsiveContentPadding">
+		</smartTable:SmartTable>
+		</semantic:content>
+	</semantic:FullscreenPage>
+</mvc:View>
