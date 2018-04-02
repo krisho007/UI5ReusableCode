@@ -1,1 +1,4 @@
--> In the UI, enableAutoBinding="true" will ensure that the entity set mentioned in property EntitySet will be called immediately. 
+-> In the UI, enableAutoBinding="true" will ensure that the entity set mentioned in property EntitySet will be called immediately.
+
+-> In the SMartTable, if you want to call sap/opu/odata/sap/serviceName/HeaderEntitySet(keys)/NavigationName,
+Property entitySet will be the target EntitySet name (targetted by the Navigation property). tableBindingPath="NavigationName".
