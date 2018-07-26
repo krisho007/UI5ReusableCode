@@ -1,0 +1,37 @@
+		*************************UI5*********************************
+    <m:Input width="100%" id="InspectionBy" type="Text" suggest="handleSuggest" maxSuggestionWidth="30%" 
+    showSuggestion="true" suggestionItems="{/ZWM_USER_VH}" startSuggestion="1">
+		    <m:suggestionItems>
+			    <core:ListItem text="{userId}" additionalText="{Name}" />
+		    </m:suggestionItems>
+    </m:Input>    
+    
+    ************************Controller****************************
+    handleSuggest: function(oEvent) {
+			var sTerm = oEvent.getParameter("suggestValue");
+			var oFilter;
+			if (sTerm) {
+				oFilter = new Filter({
+					filters: [new Filter("Name", sap.ui.model.FilterOperator.Contains, sTerm),
+						new Filter("userId", sap.ui.model.FilterOperator.Contains, sTerm)
+					],
+					and: false
+				});
+			}
+			oEvent.getSource().getBinding("suggestionItems").filter(oFilter);
+		},
+    
+    *******************************ABAP CDS***************************
+  @AbapCatalog.sqlViewName: 'ZWM_VUSER_VH'
+  @AbapCatalog.compiler.compareFilter: true
+  @AccessControl.authorizationCheck: #CHECK
+  @EndUserText.label: 'User Value Help'
+  @Search.searchable: true
+  define view ZWM_USER_VH as select from v_usr_name {
+    @Search.defaultSearchElement: true
+    @Search.ranking: #HIGH
+    key bname as userId,
+    @Search.defaultSearchElement: true    
+    name_text as Name
+  }
+****************************************************************************
