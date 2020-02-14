@@ -1,0 +1,22 @@
+            var oListBinding = oModel.bindList("/Templates", undefined, undefined, undefined, { $$updateGroupId: "AddTemplate" });
+            var oContext = oListBinding
+                .create({
+                    "global_tool_id": odd_tools.getSelectedKey(),
+                    "template_name": otxt_template_name.getValue()
+                });
+
+            oContext.created().then(
+                function () {
+                    MessageBox.alert(oView.getModel("i18n").getResourceBundle().getText('AddTemplateSuccessMessage') + ' ' + oContext.getProperty("id") + ".", {
+                        icon: MessageBox.Icon.SUCCESS,
+                        title: oView.getModel("i18n").getResourceBundle().getText('Success')
+                    });
+                }, function (oError) {
+                    console.log("oError");
+                    console.log(oError);
+                    MessageBox.alert(oView.getModel("i18n").getResourceBundle().getText(oError.message), {
+                        icon: MessageBox.Icon.ERROR,
+                        title: oView.getModel("i18n").getResourceBundle().getText('Error')
+                    });
+                });
+            oModel.submitBatch("AddTemplate").then(resetBusy, resetBusy);
