@@ -1,6 +1,6 @@
 SmartTable column widths are crazy. They are driven by maxlength of properties. Use below event handler for setting them right.
 
-# Bind to beforeRebindTable' event
+# Bind to 'beforeRebindTable' event
 <smartTable:SmartTable id="smartTable" persistencyKey="com.cis.UXAnalyticsReport" entitySet="Actions" smartFilterId="smartFilterBar"
   tableType="Table" useVariantManagement="false" useExportToExcel="true" useTablePersonalisation="true" header="Application Accesses"
   showRowCount="true" class="sapFDynamicPageAlignContent"  beforeRebindTable="handleBeforeRebindTable">
@@ -8,13 +8,13 @@ SmartTable column widths are crazy. They are driven by maxlength of properties. 
 
 
 # Below Code in your Controller
-		handleBeforeRebindTable: function(oEvent){
-			var oBindingParams = oEvent.getParameter("bindingParams");
-			oBindingParams.events["dataReceived"] = this.onDataReceived.bind(this);
-		},
-		onDataReceived: function (oEvent) {
-			var oTable = this.getView().byId("smartTable");
-			oTable.getTable().getColumns().forEach(function (oColumn) {
-				oColumn.setWidth("100%");
-			});
-		}
+handleBeforeRebindTable: function(oEvent){
+	var oBindingParams = oEvent.getParameter("bindingParams");
+	oBindingParams.events["dataReceived"] = this.onDataReceived.bind(this);
+},
+onDataReceived: function (oEvent) {
+	var oTable = this.getView().byId("smartTable");
+	oTable.getTable().getColumns().forEach(function (oColumn) {
+		oColumn.setWidth("100%");
+	});
+}
