@@ -32,7 +32,7 @@ onBeforeRebind: function (oEvent) {
 ```
 - Custom Columns in a smart table
 ```
-<smartTable:SmartTable id="smartTable">
+<smartTable:SmartTable id="smartTable" tableType="ResponsiveTable">
 <m:Table mode="SingleSelectMaster" selectionChange=".onPressTableItem">
 	<m:columns>
 	    <m:Column id="PRTotal" width="120px" hAlign="End">
