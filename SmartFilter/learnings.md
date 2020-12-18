@@ -5,7 +5,7 @@
     <smartFilterBar:ControlConfiguration key="Plant" displayBehaviour="descriptionOnly" filterType="multiple"/>
 ```
 
-If there are no filters in the SmartFilter, use below annotations    
+- If there are no filters in the SmartFilter, use below annotations    
 ```xml
 <Annotations Target="ZPR_EXT_PS_MAY20_SRV.PR">
 <Annotation Term="UI.SelectionFields">
