@@ -1,9 +1,7 @@
 - Add $expand to binding URL/Path
 
 ```xml
-            <smartTable:SmartTable id="smartTable" 
-            entitySet="PRs" beforeRebindTable=".onBeforeRebind" 
-            >
+            <smartTable:SmartTable id="smartTable" entitySet="PRs" beforeRebindTable=".onBeforeRebind">
 ```
 
 ```
