@@ -20,12 +20,13 @@ onBeforeRebind: function (oEvent) {
 - Event handlers for smart table binding
 ```
 onBeforeRebind: function (oEvent) {
-   var mBindingParams = oEvent.getParameter("bindingParams");
-				//Event handlers for the binding
-				mBindingParams.events = {
-					"dataReceived" : function(oEvent){
-            
-					}.bind(this)
-				};
+	var mBindingParams = oEvent.getParameter("bindingParams");
+	
+	//Event handlers for the binding
+	mBindingParams.events = {
+		"dataReceived" : function(oEvent){
+
+		}.bind(this)
+	};
    
 ```
