@@ -19,3 +19,15 @@
 	</Collection>
 </Annotation>
 </Annotations>
+```
+
+- If you want the Value Help to be a drop down (not a popup), there are two ways of achieving it. Do any ONE of these.1. Use controlType in controlConfiguration 
+1. Use controlType in controlConfiguration 
+```xml
+<smartFilterBar:controlConfiguration>
+    <smartFilterBar:ControlConfiguration key="Plant" displayBehaviour="descriptionOnly" controlType="dropDownList"/>
+```
+2. In the metadata 
+```xml
+<Property Name="ABC" Type="Edm.String" sap:value-list="fixed-values"/>
+```
