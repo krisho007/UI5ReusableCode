@@ -31,3 +31,10 @@
 ```xml
 <Property Name="ABC" Type="Edm.String" sap:value-list="fixed-values"/>
 ```
+
+- Associate a Text property to an ID property
+```xml
+<Annotations Target="ZPR_EXT_PS_MAY20_SRV.Status/Id" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+	<Annotation Term="com.sap.vocabularies.Common.v1.Text" Path="Name"/>
+</Annotations>
+```
