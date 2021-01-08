@@ -47,3 +47,10 @@ onBeforeRebind: function (oEvent) {
 </m:Table>                
 </smartTable:SmartTable>    
 ```
+
+- In table settings, hide 'Group', 'Sort', 'Filter'
+```
+            <smartTable:SmartTable id="smartTable" 
+            customData:p13nDialogSettings='{filter:{visible:false},sort:{visible:false},group:{visible:false}}'>
+```	    
+
