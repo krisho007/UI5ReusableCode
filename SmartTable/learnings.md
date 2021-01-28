@@ -1,3 +1,7 @@
+- Hide columns from SmartTable (personalization)
+```xml
+<smartTable:SmartTable ignoreFromPersonalisation="column1,column2"/>
+```
 - Add $expand to binding URL/Path
 
 ```xml
